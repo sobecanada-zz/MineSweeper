@@ -84,9 +84,9 @@ def setNumbers(grid):
 #Reveal blocks (copying value from grid(ans) to game board for display)
 def revealBlocks(grid, game_board, row, col):
     #if the block has NOT been revealed already
-    if game_board[row][col] == ' ':
+    if game_board[row][col] == '?':
         game_board[row][col] = grid[row][col]
-        if game_board[row][col] == '0':
+        if grid[row][col] == '0':
             for r, c in findNeighbours(grid, row, col):
                 revealBlocks(grid, game_board, r, c)
     else:
@@ -116,22 +116,17 @@ def playGame():
     start = 0
     grid, mines = setUpGrid(grid_size, start, number_of_mines)
 
-    game_board = [[' ' for i in range(grid_size) ] for i in range(grid_size)]
+    game_board = [['?' for i in range(grid_size) ] for i in range(grid_size)]
     displayGrid(game_board)
 
     Test = True
     msg = ("Please enter the coordinate: ")
-
-    print "CHEEZE \n"
-    displayGrid(grid)
-    print "\n\n"
 
     while Test == True:
         input = raw_input(msg)
         result = validateInput(grid, input)
 
         input_coordinate = result['coordinate']
-
         if input_coordinate:
 
              revealBlocks(grid, game_board, input_coordinate[0],
