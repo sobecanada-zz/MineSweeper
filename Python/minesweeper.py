@@ -104,7 +104,7 @@ def validateInput(grid, promp):
     valid_input = re.match(pattern, promp)
     
     #If the input is validated with the regex and in the grid
-    if valid_input or int(valid_input.group(2)) <= (grid_size - 1):
+    if valid_input:
         col_num = ascii_lowercase.index(valid_input.group(1))
         row_num = int(valid_input.group(2))
 	flag = valid_input.group(3)
@@ -163,21 +163,19 @@ def playGame():
         result = validateInput(grid, promp)
 
         input_coordinate = result['coordinate']
-	#Validate input(coordinate)
-        if input_coordinate:
-	    #If the block has never being revealed
-	    if game_board[int(input_coordinate[0])][int(input_coordinate[1])] == '?': 
-		#If the user wants to put flag on the block
-		if result['flag']:
-		    #If the block already has a flag
-		    if grid[int(input_coordinate[0])][int(input_coordinate[1])] == 'F':
-			all_flags.remover(result['coordinate'])
-			game_board[int(input_coordinate[0])][int(input_coordinate[1])] = '?'
-		    else:
-			all_flags.append(result['coordinate'])
-			game_board[int(input_coordinate[0])][int(input_coordinate[1])] = 'F'
-			displayGrid(game_board)
-	        elif grid[int(input_coordinate[0])][int(input_coordinate[1])] == 'X':
+        if result['flag']:
+	    if game_board[input_coordinate[0]][input_coordinate[1]] == 'F':
+		all_flags.remove(result['coordinate'])
+		game_board[input_coordinate[0]][input_coordinate[1]] = '?'
+		displayGrid(game_board)
+	    else:
+		all_flags.append(result['coordinate'])
+		game_board[input_coordinate[0]][input_coordinate[1]] = 'F'
+		displayGrid(game_board)
+
+	elif result['coordinate']:
+	    if game_board[input_coordinate[0]][input_coordinate[1]] == '?': 
+		if grid[input_coordinate[0]][input_coordinate[1]] == 'X':
 		    print '\n \n	GAME OVER!!! CHECK THE ANSWER BOARD BELOW ;)'
 		    displayGrid(grid)
                     return
